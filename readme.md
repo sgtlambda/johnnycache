@@ -24,7 +24,7 @@ let cache = new Cache();
 
 // this will be hella faster the second time around
 cache.doCached(function () {
-    exec('npm install');
+    return exec('npm install');
 }, {
     input: 'package.json',
     output: ['node_modules/**/*']
