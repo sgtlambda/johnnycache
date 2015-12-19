@@ -22,6 +22,7 @@ const exec = require('child-process-promise');
 
 let cache = new Cache();
 
+// this will be hella faster the second time around
 cache.doCached(function () {
     exec('npm install');
 }, {
