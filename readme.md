@@ -18,32 +18,52 @@ $ npm install --save johnnycache
 
 ```js
 const Cache = require('johnnycache');
+const exec = require('child-process-promise');
 
 let cache = new Cache();
 
-//=> 'unicorns & rainbows'
+cache.doCached(function () {
+    exec('npm install');
+}, {
+    input: 'package.json',
+    output: ['node_modules/**/*']
+});
+
 ```
 
 
 ## API
 
-### johnnycache(input, [options])
-
-#### input
-
-Type: `string`
-
-Lorem ipsum.
+### johnnycache([options])
 
 #### options
 
-##### foo
+##### workspace
 
-Type: `boolean`  
-Default: `false`
+Type: `type`  
+Default: `path.join(process.cwd(), '.johnny')`
 
-Lorem ipsum.
+### johnnycache.doCached(run, options)
 
+#### run
+
+Type: `function`
+
+A function that returns a promise for the file operation's completion
+
+#### options
+
+##### input
+
+Type: `string|string[]`
+
+A glob or an array of globs that indicate the files of which the hash should be calculated to check whether there is a cached version of the operation
+
+##### output
+
+Type: `string|string[]`
+
+A glob or an array of globs that indicate the files that are produced as a result of the operation
 
 ## License
 
