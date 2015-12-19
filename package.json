@@ -1,0 +1,47 @@
+{
+  "name": "johnnycache",
+  "version": "0.0.0",
+  "description": "Cache file operations",
+  "main": "lib/Cache.js",
+  "license": "MIT",
+  "repository": "jmversteeg/johnnycache",
+  "author": {
+    "name": "JM Versteeg",
+    "email": "janmerijnversteeg@gmail.com",
+    "url": "github.com/jmversteeg"
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "scripts": {
+    "pretest": "jshint lib",
+    "test": "mocha --recursive -R spec"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    ""
+  ],
+  "dependencies": {
+    "fs-extra": "^0.26.3",
+    "jummy": "^0.1.0",
+    "lodash": "^3.10.1",
+    "mkdirp": "^0.5.1",
+    "nedb": "^1.5.0",
+    "pify": "^2.3.0",
+    "pinkie-promise": "^2.0.0",
+    "sprintf-js": "^1.0.3"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "chai-as-promised": "^5.1.0",
+    "coveralls": "^2.11.6",
+    "istanbul": "^0.4.1",
+    "jshint": "^2.8.0",
+    "mocha": "^2.3.4",
+    "mock-fs": "^3.5.0",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
+  }
+}
