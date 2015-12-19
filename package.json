@@ -17,11 +17,13 @@
     "pretest": "eslint lib && eslint test",
     "test": "mocha --recursive -R spec"
   },
-  "files": [
-    "index.js"
-  ],
   "keywords": [
-    ""
+    "cache",
+    "files",
+    "file",
+    "gulp",
+    "composer",
+    "performance"
   ],
   "dependencies": {
     "fs-extra": "^0.26.3",
