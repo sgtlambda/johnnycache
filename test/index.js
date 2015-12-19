@@ -6,7 +6,6 @@ const Cache   = require('./../lib/Cache');
 const sinon   = require('sinon');
 const pify    = require('pify');
 const fs      = require('fs');
-const _       = require('lodash');
 const fsExtra = require('fs-extra');
 const del     = require('del');
 
@@ -42,26 +41,23 @@ describe('Cache', ()=> {
             return resetWorkspace();
         });
         it('should not run the callable a second time if the input files stayed the same', () => {
-            let run     = sinon.spy();
-            let options = _.assign({}, defaultOptions, {run});
-            return cache.doCached(options)
+            let run = sinon.spy();
+            return cache.doCached(run, defaultOptions)
                 .then(() => uncopy())
-                .then(() => cache.doCached(options))
+                .then(() => cache.doCached(run, defaultOptions))
                 .then(() => run.should.have.been.calledOnce);
         });
         it('should run the callable twice if the input files were modified', () => {
-            let run     = sinon.spy(copy);
-            let options = _.assign({}, defaultOptions, {run});
-            return cache.doCached(options)
+            let run = sinon.spy(copy);
+            return cache.doCached(run, defaultOptions)
                 .then(() => modify())
-                .then(() => cache.doCached(options))
+                .then(() => cache.doCached(run, defaultOptions))
                 .then(() => run.should.have.been.calledTwice);
         });
         it('should restore the operation from cache the second time if the input files stayed the same', () => {
-            let options = _.assign({}, defaultOptions, {run: copy});
-            return cache.doCached(options)
+            return cache.doCached(copy, defaultOptions)
                 .then(() => uncopy())
-                .then(() => cache.doCached(options))
+                .then(() => cache.doCached(copy, defaultOptions))
                 .then(() => pify(fs.readFile)('sample/build/foo.txt', {encoding: 'utf8'}))
                 .then((data) => {
                     data.should.equal('bar');

@@ -17,9 +17,10 @@ $ npm install --save johnnycache
 ## Usage
 
 ```js
-const johnnycache = require('johnnycache');
+const Cache = require('johnnycache');
 
-johnnycache('unicorns');
+let cache = new Cache();
+
 //=> 'unicorns & rainbows'
 ```
 
