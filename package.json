@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "fs-extra": "^0.26.3",
-    "jummy": "^0.1.0",
+    "jummy": "^0.2.0",
     "lodash": "^3.10.1",
     "mkdirp": "^0.5.1",
     "nectar": "^0.3.0",
