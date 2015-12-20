@@ -37,6 +37,8 @@ cache.doCached(function () {
 
 ### johnnycache([options])
 
+Constructor
+
 #### options
 
 ##### workspace
