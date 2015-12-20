@@ -66,6 +66,20 @@ Type: `string|string[]`
 
 A glob or an array of globs that indicate the files that are produced as a result of the operation
 
+##### action
+
+Type: `string`
+Default: Automatically generated string based on `input` and `output` arguments
+
+Identifier for the operation
+
+##### compress
+
+Type: `boolean`
+Default: `false`
+
+Whether to gzip cached files
+
 ## License
 
 MIT © [JM Versteeg](http://github.com/jmversteeg)
