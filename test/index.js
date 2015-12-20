@@ -2,6 +2,7 @@
 
 require('./support/bootstrap');
 
+const _       = require('lodash');
 const Cache   = require('./../lib/Cache');
 const sinon   = require('sinon');
 const pify    = require('pify');
@@ -58,6 +59,16 @@ describe('Cache', ()=> {
             return cache.doCached(copy, defaultOptions)
                 .then(() => uncopy())
                 .then(() => cache.doCached(copy, defaultOptions))
+                .then(() => pify(fs.readFile)('sample/build/foo.txt', {encoding: 'utf8'}))
+                .then((data) => {
+                    data.should.equal('bar');
+                });
+        });
+        it('should work with the compress option set to true', () => {
+            let options = _.assign(defaultOptions, {'compress': true});
+            return cache.doCached(copy, options)
+                .then(() => uncopy())
+                .then(() => cache.doCached(copy, options))
                 .then(() => pify(fs.readFile)('sample/build/foo.txt', {encoding: 'utf8'}))
                 .then((data) => {
                     data.should.equal('bar');

@@ -27,10 +27,11 @@
   ],
   "dependencies": {
     "fs-extra": "^0.26.3",
+    "gunzip-maybe": "^1.2.1",
     "jummy": "^0.2.0",
     "lodash": "^3.10.1",
     "mkdirp": "^0.5.1",
-    "nectar": "^0.3.4",
+    "nectar": "^0.5.1",
     "nedb": "^1.5.0",
     "pify": "^2.3.0",
     "pinkie-promise": "^2.0.0",
@@ -40,14 +41,14 @@
   },
   "devDependencies": {
     "chai": "^3.4.1",
-    "chai-as-promised": "^5.1.0",
+    "chai-as-promised": "^5.2.0",
     "coveralls": "^2.11.6",
     "del": "^2.2.0",
     "eslint": "^1.10.3",
     "istanbul": "^0.4.1",
     "jshint": "^2.9.1-rc1",
     "mocha": "^2.3.4",
-    "mock-fs": "^3.5.0",
+    "mock-fs": "^3.6.0",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
   }
