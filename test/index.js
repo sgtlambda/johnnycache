@@ -29,7 +29,8 @@ const resetWorkspace = function () {
 var defaultOptions = {
     action: 'op',
     input:  ['sample/assets/*'],
-    output: ['sample/build/*']
+    output: ['sample/build/*'],
+    ttl:    60000
 };
 
 describe('Cache', ()=> {
@@ -42,7 +43,7 @@ describe('Cache', ()=> {
             return resetWorkspace();
         });
         it('should not run the callable a second time if the input files stayed the same', () => {
-            let run = sinon.spy();
+            let run     = sinon.spy();
             return cache.doCached(run, defaultOptions)
                 .then(() => uncopy())
                 .then(() => cache.doCached(run, defaultOptions))
@@ -55,6 +56,14 @@ describe('Cache', ()=> {
                 .then(() => cache.doCached(run, defaultOptions))
                 .then(() => run.should.have.been.calledTwice);
         });
+        it('should run the callable twice if the cached version has expired', () => {
+            let run     = sinon.spy(copy);
+            let options = _.assign({}, defaultOptions, {'ttl': -1});
+            return cache.doCached(run, options)
+                .then(() => uncopy())
+                .then(() => cache.doCached(run, options))
+                .then(() => run.should.have.been.calledTwice);
+        });
         it('should restore the operation from cache the second time if the input files stayed the same', () => {
             return cache.doCached(copy, defaultOptions)
                 .then(() => uncopy())
@@ -65,7 +74,7 @@ describe('Cache', ()=> {
                 });
         });
         it('should work with the compress option set to true', () => {
-            let options = _.assign(defaultOptions, {'compress': true});
+            let options = _.assign({}, defaultOptions, {'compress': true});
             return cache.doCached(copy, options)
                 .then(() => uncopy())
                 .then(() => cache.doCached(copy, options))
