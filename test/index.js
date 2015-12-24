@@ -34,16 +34,16 @@ var defaultOptions = {
 };
 
 describe('Cache', ()=> {
+    let cache;
+    beforeEach(()=> {
+        cache = new Cache();
+    });
+    afterEach(()=> {
+        return resetWorkspace();
+    });
     describe('doCached', ()=> {
-        let cache;
-        beforeEach(()=> {
-            cache = new Cache();
-        });
-        afterEach(()=> {
-            return resetWorkspace();
-        });
         it('should not run the callable a second time if the input files stayed the same', () => {
-            let run     = sinon.spy();
+            let run = sinon.spy();
             return cache.doCached(run, defaultOptions)
                 .then(() => uncopy())
                 .then(() => cache.doCached(run, defaultOptions))
@@ -82,6 +82,22 @@ describe('Cache', ()=> {
                 .then((data) => {
                     data.should.equal('bar');
                 });
+        });
+    });
+    describe('purgeExpired', () => {
+        it('should delete the files of expired cache entries', () => {
+            let expiresLater       = defaultOptions;
+            let expiresImmediately = _.assign({}, defaultOptions, {'ttl': -1, 'action': 'op2'});
+            let resultExpiresImmediately, resultExpiresLater;
+            return cache.doCached(copy, expiresImmediately)
+                .then(r => resultExpiresImmediately = r)
+                .then(() => cache.doCached(copy, expiresLater))
+                .then(r => resultExpiresLater = r)
+                .then(() => cache.purgeExpired())
+                .then(() => Promise.all([
+                    pify(fs.access)(cache.getStorageLocation(resultExpiresImmediately)).should.be.rejected,
+                    pify(fs.access)(cache.getStorageLocation(resultExpiresLater)).should.be.resolved
+                ]));
         });
     });
 });
