@@ -2,13 +2,15 @@
 
 require('./support/bootstrap');
 
-const _       = require('lodash');
-const Cache   = require('./../lib/Cache');
-const sinon   = require('sinon');
-const pify    = require('pify');
-const fs      = require('fs');
-const fsExtra = require('fs-extra');
-const del     = require('del');
+const _                  = require('lodash');
+const Promise            = require('pinkie-promise');
+const CacheableOperation = require('./../lib/CacheableOperation');
+const Cache              = require('./../lib/Cache');
+const sinon              = require('sinon');
+const pify               = require('pify');
+const fs                 = require('fs');
+const fsExtra            = require('fs-extra');
+const del                = require('del');
 
 const copy = function () {
     return pify(fsExtra.copy)('sample/assets/foo.txt', 'sample/build/foo.txt');
@@ -110,6 +112,25 @@ describe('Cache', ()=> {
                     pify(fs.access)(cache.getStorageLocation(resultExpiresImmediately)).should.be.rejected,
                     pify(fs.access)(cache.getStorageLocation(resultExpiresLater)).should.be.resolved
                 ]));
+        });
+    });
+    describe('prepareResult', () => {
+        it('should prevent hash collisions', () => {
+            let result1, result2;
+            const fakeOp = () => {
+                let fakeOp     = new CacheableOperation(() => Promise.resolve(), defaultOptions);
+                fakeOp.getHash = () => Promise.resolve('bar');
+                return fakeOp;
+            };
+            return cache.run(fakeOp())
+                .then(result => {
+                    result1 = result;
+                    return cache.prepareResult(fakeOp());
+                })
+                .then(result => {
+                    result2 = result;
+                    result1.fileName.should.not.eql(result2.fileName);
+                });
         });
     });
 });
