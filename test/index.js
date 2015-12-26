@@ -83,6 +83,18 @@ describe('Cache', ()=> {
                     data.should.equal('bar');
                 });
         });
+        it('should generate a file at the location corresponding to the cached result', () => {
+            let run = sinon.spy(copy);
+            return cache.doCached(run, defaultOptions)
+                .then(cachedResult => pify(fs.access)(cache.getStorageLocation(cachedResult)));
+        });
+        it('should fallback gracefully if the cached result has no corresponding file', () => {
+            let run = sinon.spy(copy);
+            return cache.doCached(run, defaultOptions)
+                .then(cachedResult => del(cache.getStorageLocation(cachedResult)))
+                .then(() => cache.doCached(run, defaultOptions))
+                .then(() => run.should.have.been.calledTwice);
+        });
     });
     describe('purgeExpired', () => {
         it('should delete the files of expired cache entries', () => {
