@@ -13,25 +13,25 @@ const fsExtra            = require('fs-extra');
 const del                = require('del');
 
 const copy = function () {
-    return pify(fsExtra.copy)('sample/assets/foo.txt', 'sample/build/foo.txt');
+    return pify(fsExtra.copy)('test/sample/assets/foo.txt', 'test/sample/build/foo.txt');
 };
 
 const uncopy = function () {
-    return del(['sample/build']);
+    return del(['test/sample/build']);
 };
 
 const modify = function () {
-    return pify(fsExtra.copy)('sample/assets/foo.txt', 'sample/assets/foo2.txt');
+    return pify(fsExtra.copy)('test/sample/assets/foo.txt', 'test/sample/assets/foo2.txt');
 };
 
 const resetWorkspace = function () {
-    return del(['sample/build', '.johnny', 'sample/assets/foo2.txt']);
+    return del(['test/sample/build', '.johnny', 'test/sample/assets/foo2.txt']);
 };
 
 var defaultOptions = {
     action: 'op',
-    input:  ['sample/assets/*'],
-    output: ['sample/build/*'],
+    input:  ['test/sample/assets/*'],
+    output: ['test/sample/build/*'],
     ttl:    60000
 };
 
@@ -70,7 +70,7 @@ describe('Cache', ()=> {
             return cache.doCached(copy, defaultOptions)
                 .then(() => uncopy())
                 .then(() => cache.doCached(copy, defaultOptions))
-                .then(() => pify(fs.readFile)('sample/build/foo.txt', {encoding: 'utf8'}))
+                .then(() => pify(fs.readFile)('test/sample/build/foo.txt', {encoding: 'utf8'}))
                 .then((data) => {
                     data.should.equal('bar');
                 });
@@ -80,7 +80,7 @@ describe('Cache', ()=> {
             return cache.doCached(copy, options)
                 .then(() => uncopy())
                 .then(() => cache.doCached(copy, options))
-                .then(() => pify(fs.readFile)('sample/build/foo.txt', {encoding: 'utf8'}))
+                .then(() => pify(fs.readFile)('test/sample/build/foo.txt', {encoding: 'utf8'}))
                 .then((data) => {
                     data.should.equal('bar');
                 });
