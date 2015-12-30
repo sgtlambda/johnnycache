@@ -88,11 +88,15 @@ Whether to gzip cached files
 
 MIT © [JM Versteeg](http://github.com/jmversteeg)
 
+[![Build Status (Windows)][appveyor-image]][appveyor-url]
 [![dependency Status][david-image]][david-url]
 [![devDependency Status][david-dev-image]][david-dev-url]
 
 [travis-image]: https://img.shields.io/travis/jmversteeg/johnnycache.svg?style=flat-square
 [travis-url]: https://travis-ci.org/jmversteeg/johnnycache
+
+[appveyor-image]: https://img.shields.io/appveyor/ci/jmversteeg/johnnycache.svg?style=flat-square&label=build+(Windows)
+[appveyor-url]: https://ci.appveyor.com/project/jmversteeg/johnnycache
 
 [codeclimate-image]: https://img.shields.io/codeclimate/github/jmversteeg/johnnycache.svg?style=flat-square
 [codeclimate-url]: https://codeclimate.com/github/jmversteeg/johnnycache
