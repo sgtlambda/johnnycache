@@ -34,6 +34,7 @@
     "mkdirp": "^0.5.1",
     "nectar": "^0.7.0",
     "nedb": "^1.5.1",
+    "path-exists": "^2.1.0",
     "pify": "^2.3.0",
     "pinkie-promise": "^2.0.0",
     "promise-retry": "^1.0.1",
