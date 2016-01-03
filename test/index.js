@@ -43,7 +43,7 @@ describe('Cache', ()=> {
     afterEach(()=> {
         return resetWorkspace();
     });
-    describe('doCached', ()=> {
+    describe('.doCached', ()=> {
         it('should not run the callable a second time if the input files stayed the same', () => {
             let run = sinon.spy();
             return cache.doCached(run, defaultOptions)
@@ -98,7 +98,7 @@ describe('Cache', ()=> {
                 .then(() => run.should.have.been.calledTwice);
         });
     });
-    describe('purgeExpired', () => {
+    describe('.purgeExpired', () => {
         it('should delete the files of expired cache entries', () => {
             let expiresLater       = defaultOptions;
             let expiresImmediately = _.assign({}, defaultOptions, {'ttl': -1, 'action': 'op2'});
@@ -114,7 +114,7 @@ describe('Cache', ()=> {
                 ]));
         });
     });
-    describe('prepareResult', () => {
+    describe('.prepareResult', () => {
         it('should prevent hash collisions', () => {
             let result1, result2;
             const fakeOp = () => {
