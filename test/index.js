@@ -58,6 +58,14 @@ describe('Cache', ()=> {
                 .then(() => cache.doCached(run, defaultOptions))
                 .then(() => run.should.have.been.calledTwice);
         });
+        it('should run the callable twice if the output argument is different', () => {
+            let run = sinon.spy(copy);
+            return cache.doCached(run, defaultOptions)
+                .then(() => cache.doCached(run, _.assign(defaultOptions, {
+                    output: ['test/sample/build/*.txt']
+                })))
+                .then(() => run.should.have.been.calledTwice);
+        });
         it('should run the callable twice if the cached version has expired', () => {
             let run     = sinon.spy(copy);
             let options = _.assign({}, defaultOptions, {'ttl': -1});
@@ -118,8 +126,8 @@ describe('Cache', ()=> {
         it('should prevent hash collisions', () => {
             let result1, result2;
             const fakeOp = () => {
-                let fakeOp     = new CacheableOperation(() => Promise.resolve(), defaultOptions);
-                fakeOp.getHash = () => Promise.resolve('bar');
+                let fakeOp         = new CacheableOperation(() => Promise.resolve(), defaultOptions);
+                fakeOp.getFileHash = () => Promise.resolve('bar');
                 return fakeOp;
             };
             return cache.run(fakeOp())

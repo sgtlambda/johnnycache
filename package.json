@@ -47,10 +47,10 @@
     "chai-as-promised": "^5.2.0",
     "coveralls": "^2.11.6",
     "eslint": "^1.10.3",
+    "hasha": "^2.2.0",
     "istanbul": "^0.4.1",
     "jshint": "^2.9.1-rc2",
     "mocha": "^2.3.4",
-    "mock-fs": "^3.6.0",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
   }
