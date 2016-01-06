@@ -1,6 +1,6 @@
 {
   "name": "johnnycache",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Cache file operations",
   "main": "lib/Cache.js",
   "license": "MIT",
