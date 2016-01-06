@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "del": "^2.2.0",
-    "extrakt": "0.0.4",
+    "extrakt": "0.0.5",
     "fs-extra": "^0.26.3",
     "hasha": "^2.2.0",
     "jummy": "^0.3.0",
