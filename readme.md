@@ -27,7 +27,7 @@ cache.doCached(function () {
     return exec('npm install');
 }, {
     input: 'package.json',
-    output: ['node_modules/**/*']
+    output: 'node_modules'
 });
 
 ```
@@ -60,13 +60,13 @@ A function that returns a promise for the file operation's completion
 
 Type: `string|string[]`
 
-A glob or an array of globs that indicate the files of which the hash should be calculated to check whether there is a cached version of the operation
+A glob/directory or a mixed array of globs/directories that indicate the files of which the hash should be calculated to check whether there is a cached version of the operation
 
 ##### output
 
 Type: `string|string[]`
 
-A glob or an array of globs that indicate the files that are produced as a result of the operation
+A glob/directory or a mixed array of globs/directories that indicate the files that are produced as a result of the operation
 
 ##### action
 
