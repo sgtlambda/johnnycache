@@ -18,7 +18,7 @@ $ npm install --save johnnycache
 
 ```js
 const Cache = require('johnnycache');
-const exec = require('child-process-promise');
+const exec = require('execa').shell;
 
 let cache = new Cache();
 
