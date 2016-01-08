@@ -3,6 +3,7 @@
 > Cache file operations
 
 [![Build Status][travis-image]][travis-url]
+[![Build Status (Windows)][appveyor-image]][appveyor-url]
 [![Code Quality][codeclimate-image]][codeclimate-url]
 [![Code Coverage][coveralls-image]][coveralls-url]
 [![NPM Version][npm-image]][npm-url]
@@ -88,7 +89,6 @@ Whether to gzip cached files
 
 MIT © [JM Versteeg](http://github.com/jmversteeg)
 
-[![Build Status (Windows)][appveyor-image]][appveyor-url]
 [![dependency Status][david-image]][david-url]
 [![devDependency Status][david-dev-image]][david-dev-url]
 
