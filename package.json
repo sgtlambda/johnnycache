@@ -34,7 +34,7 @@
     "lodash": "^4.0.0",
     "mkdirp": "^0.5.1",
     "nectar": "^0.8.1",
-    "nedb": "^1.6.2",
+    "nedb": "^1.7.0",
     "path-exists": "^2.1.0",
     "pify": "^2.3.0",
     "pinkie-promise": "^2.0.0",
