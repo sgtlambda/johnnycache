@@ -68,6 +68,12 @@ Type: `string|string[]`
 
 A glob/directory or a mixed array of globs/directories that indicate the files that are produced as a result of the operation
 
+##### ttl
+
+Type: `number`
+
+Ttl (time-to-live) in milliseconds. If none given, the cache will not expire and will only be purged automatically if the total cache size exceeds the configured maximum.
+
 ##### action
 
 Type: `string`
