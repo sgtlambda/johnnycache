@@ -11,6 +11,9 @@ const pify               = require('pify');
 const fs                 = require('fs');
 const fsExtra            = require('fs-extra');
 const del                = require('del');
+const SavedToCache       = require('./../lib/SavedToCache');
+const RestoredFromCache  = require('./../lib/RestoredFromCache');
+const CachedResult       = require('./../lib/CachedResult');
 
 require('sinon-as-promised');
 
@@ -154,18 +157,36 @@ describe('Cache', () => {
                 it('should generate a file at the location corresponding to the cached result', () => {
                     let run = sinon.spy(copy);
                     return cache.doCached(run, defaultOptions)
-                        .then(cachedResult => pify(fs.access)(cache.getStorageLocation(cachedResult)));
+                        .then(result => pify(fs.access)(cache.getStorageLocation(result)));
                 });
 
                 it('should fallback gracefully if the cached result has no corresponding file', () => {
                     let run = sinon.spy(copy);
                     return cache.doCached(run, defaultOptions)
-                        .then(cachedResult => del(cache.getStorageLocation(cachedResult)))
+                        .then(result => del(cache.getStorageLocation(result)))
                         .then(() => cache.doCached(run, defaultOptions))
                         .then(() => run.should.have.been.calledTwice);
                 });
             });
 
+        });
+
+        it('should return SavedToCache and RestoredFromCache objects for performance analytics purposes', () => {
+            let run = sinon.spy();
+            return cache.doCached(run, defaultOptions)
+                .then(saved => {
+                    saved.should.be.an.instanceof(SavedToCache);
+                    saved.should.have.property('operationRuntime').that.is.a('number');
+                    saved.should.have.property('storageRuntime').that.is.a('number');
+                    saved.should.have.property('cachedResult').that.is.an.instanceof(CachedResult);
+                })
+                .then(() => uncopy())
+                .then(() => cache.doCached(run, defaultOptions))
+                .then(restored => {
+                    restored.should.be.an.instanceof(RestoredFromCache);
+                    restored.should.have.property('runtime').that.is.a('number');
+                    restored.should.have.property('cachedResult').that.is.an.instanceof(CachedResult);
+                });
         });
     });
 
@@ -173,8 +194,8 @@ describe('Cache', () => {
         it('should assign the filesize to the cachedResult object', () => {
             return cache.doCached(sinon.spy(), defaultOptions)
                 .then(result => {
-                    result.fileSize.should.be.a('number');
-                    result.fileSize.should.be.above(0);
+                    result.cachedResult.fileSize.should.be.a('number');
+                    result.cachedResult.fileSize.should.be.above(0);
                 });
         });
     });
@@ -211,7 +232,7 @@ describe('Cache', () => {
                 })
                 .then(result => {
                     result2 = result;
-                    result1.fileName.should.not.eql(result2.fileName);
+                    result1.cachedResult.fileName.should.not.eql(result2.fileName);
                 });
         });
     });
@@ -225,7 +246,7 @@ describe('Cache', () => {
                     cache.doCached(sinon.spy(), _.assign({}, defaultOptions, {'action': 'op 3'}))
                 ])
                 .then(r => {
-                    results = r;
+                    results = _.map(r, 'cachedResult');
                     return cache.getAllDocs();
                 })
                 .then(docs => {
