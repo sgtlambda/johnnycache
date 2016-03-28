@@ -3,7 +3,6 @@
 require('./../support/bootstrap');
 
 const sinon               = require('sinon');
-const CachedResult        = require('./../../lib/CachedResult');
 const getRedundantResults = require('./../../lib/util/getRedundantResults');
 
 const makeMockResult = fileSize => {
