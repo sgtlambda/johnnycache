@@ -58,7 +58,7 @@ A function that returns a promise for the file operation's completion
 
 ##### input
 
-Type: `string|string[]`
+Type: `string|string[]` (optional)
 
 A glob/directory or a mixed array of globs/directories that indicate the files of which the hash should be calculated to check whether there is a cached version of the operation
 
