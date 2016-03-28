@@ -176,7 +176,7 @@ describe('Cache', () => {
         });
     });
 
-    describe('.purgeExpired', () => {
+    describe('.sync', () => {
         it('should delete the files of expired cache entries', () => {
             let expiresLater       = defaultOptions;
             let expiresImmediately = _.assign({}, defaultOptions, {'ttl': -1, 'action': 'op2'});
@@ -185,7 +185,7 @@ describe('Cache', () => {
                 .then(r => resultExpiresImmediately = r)
                 .then(() => cache.doCached(copy, expiresLater))
                 .then(r => resultExpiresLater = r)
-                .then(() => cache.purgeExpired())
+                .then(() => cache.sync())
                 .then(() => Promise.all([
                     pify(fs.access)(cache.getStorageLocation(resultExpiresImmediately)).should.be.rejected,
                     pify(fs.access)(cache.getStorageLocation(resultExpiresLater)).should.be.resolved
