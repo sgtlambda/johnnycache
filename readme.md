@@ -46,6 +46,11 @@ Constructor
 Type: `type`  
 Default: `path.join(process.cwd(), '.johnny')`
 
+##### maxSize
+
+Type: `string`
+Default: `512mb`
+
 ### johnnycache.doCached(run, options)
 
 #### run
