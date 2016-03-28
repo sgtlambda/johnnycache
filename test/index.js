@@ -30,14 +30,19 @@ const resetWorkspace = function () {
     return del(['test/sample/build', '.johnny', 'test/sample/assets/foo2.txt']);
 };
 
-var defaultOptions = {
+const defaultOptions = {
     action: 'op',
     input:  ['test/sample/assets/*'],
     output: ['test/sample/build/*'],
     ttl:    60000
 };
 
-describe('Cache', ()=> {
+var defaultOptionBuilder = () => _.assign({}, defaultOptions, {
+    onStore:   sinon.spy(),
+    onRestore: sinon.spy()
+});
+
+describe('Cache', () => {
 
     let cache;
 
@@ -53,24 +58,39 @@ describe('Cache', ()=> {
 
         _.forEach({
 
-            'input and output with wildcard': defaultOptions,
+            'input and output with wildcard': () => defaultOptionBuilder(),
 
-            'input and output as folder names (and strings)': {
-                action: 'op',
+            'input and output as folder names (and strings)': () => _.assign({}, defaultOptionBuilder(), {
                 input:  'test/sample/assets',
-                output: 'test/sample/build',
-                ttl:    60000
-            },
+                output: 'test/sample/build'
+            }),
 
-            'no input given': {
-                action: 'op',
-                output: ['test/sample/build'],
-                ttl:    60000
-            }
+            'no input given': () => _.omit(defaultOptionBuilder(), 'input')
 
-        }, (defaultOptions, description) => {
+        }, (optionBuilder, description) => {
 
             describe(description, () => {
+
+                let defaultOptions;
+
+                beforeEach(() => {
+                    defaultOptions = optionBuilder();
+                });
+
+                it('should correctly invoke the callbacks', () => {
+                    let run = sinon.spy();
+                    return cache.doCached(run, defaultOptions)
+                        .then(() => {
+                            defaultOptions.onStore.should.have.been.calledOnce;
+                            defaultOptions.onRestore.should.not.have.been.called;
+                            return uncopy();
+                        })
+                        .then(() => cache.doCached(run, defaultOptions))
+                        .then(() => {
+                            defaultOptions.onStore.should.have.been.calledOnce;
+                            defaultOptions.onRestore.should.have.been.calledOnce;
+                        });
+                });
 
                 it('should not run the callable a second time if the input files stayed the same', () => {
                     let run = sinon.spy();
@@ -80,7 +100,7 @@ describe('Cache', ()=> {
                         .then(() => run.should.have.been.calledOnce);
                 });
 
-                if (defaultOptions.input)
+                if (optionBuilder().input)
                     it('should run the callable twice if the input files were modified', () => {
                         let run = sinon.spy(copy);
                         return cache.doCached(run, defaultOptions)
