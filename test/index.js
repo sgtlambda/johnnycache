@@ -38,6 +38,7 @@ const defaultOptions = {
 };
 
 var defaultOptionBuilder = () => _.assign({}, defaultOptions, {
+    onRun:     sinon.spy(),
     onStore:   sinon.spy(),
     onRestore: sinon.spy()
 });
@@ -81,13 +82,15 @@ describe('Cache', () => {
                     let run = sinon.spy();
                     return cache.doCached(run, defaultOptions)
                         .then(() => {
-                            defaultOptions.onStore.should.have.been.calledOnce;
+                            defaultOptions.onStore.should.have.been.calledAfter(run);
+                            defaultOptions.onRun.should.have.been.calledBefore(run);
                             defaultOptions.onRestore.should.not.have.been.called;
                             return uncopy();
                         })
                         .then(() => cache.doCached(run, defaultOptions))
                         .then(() => {
                             defaultOptions.onStore.should.have.been.calledOnce;
+                            defaultOptions.onRun.should.have.been.calledOnce;
                             defaultOptions.onRestore.should.have.been.calledOnce;
                         });
                 });
