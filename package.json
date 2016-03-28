@@ -15,7 +15,8 @@
   },
   "scripts": {
     "pretest": "eslint lib && eslint test",
-    "test": "mocha -R spec"
+    "test": "mocha -R spec",
+    "test-coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive && opn coverage/lcov-report/index.html"
   },
   "keywords": [
     "cache",
@@ -50,7 +51,9 @@
     "istanbul": "^0.4.2",
     "jshint": "^2.9.1",
     "mocha": "^2.4.5",
+    "opn-cli": "^3.1.0",
     "sinon": "^1.17.3",
+    "sinon-as-promised": "^4.0.0",
     "sinon-chai": "^2.8.0"
   }
 }

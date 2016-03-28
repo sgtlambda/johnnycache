@@ -12,6 +12,8 @@ const fs                 = require('fs');
 const fsExtra            = require('fs-extra');
 const del                = require('del');
 
+require('sinon-as-promised');
+
 const copy = function () {
     return pify(fsExtra.copy)('test/sample/assets/foo.txt', 'test/sample/build/foo.txt');
 };
@@ -36,10 +38,13 @@ var defaultOptions = {
 };
 
 describe('Cache', ()=> {
+
     let cache;
+
     beforeEach(()=> {
         cache = new Cache();
     });
+
     afterEach(()=> {
         return resetWorkspace();
     });
@@ -50,13 +55,12 @@ describe('Cache', ()=> {
 
             'input and output with wildcard': defaultOptions,
 
-            'input and output as folder names': {
+            'input and output as folder names (and strings)': {
                 action: 'op',
-                input:  ['test/sample/assets'],
-                output: ['test/sample/build'],
+                input:  'test/sample/assets',
+                output: 'test/sample/build',
                 ttl:    60000
             },
-
 
             'no input given': {
                 action: 'op',
@@ -112,6 +116,7 @@ describe('Cache', ()=> {
                             data.should.equal('bar');
                         });
                 });
+
                 it('should work with the compress option set to true', () => {
                     let options = _.assign({}, defaultOptions, {'compress': true});
                     return cache.doCached(copy, options)
@@ -122,11 +127,13 @@ describe('Cache', ()=> {
                             data.should.equal('bar');
                         });
                 });
+
                 it('should generate a file at the location corresponding to the cached result', () => {
                     let run = sinon.spy(copy);
                     return cache.doCached(run, defaultOptions)
                         .then(cachedResult => pify(fs.access)(cache.getStorageLocation(cachedResult)));
                 });
+
                 it('should fallback gracefully if the cached result has no corresponding file', () => {
                     let run = sinon.spy(copy);
                     return cache.doCached(run, defaultOptions)
@@ -134,10 +141,11 @@ describe('Cache', ()=> {
                         .then(() => cache.doCached(run, defaultOptions))
                         .then(() => run.should.have.been.calledTwice);
                 });
-
             });
+
         });
     });
+
     describe('.purgeExpired', () => {
         it('should delete the files of expired cache entries', () => {
             let expiresLater       = defaultOptions;
@@ -154,6 +162,7 @@ describe('Cache', ()=> {
                 ]));
         });
     });
+
     describe('.prepareResult', () => {
         it('should prevent hash collisions', () => {
             let result1, result2;
