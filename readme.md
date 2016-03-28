@@ -21,7 +21,9 @@ $ npm install --save johnnycache
 const Cache = require('johnnycache');
 const exec = require('execa').shell;
 
-let cache = new Cache();
+let cache = new Cache({
+    maxSize: '128mb'
+});
 
 // this will be hella faster the second time around
 cache.doCached(() => exec('npm install'),
@@ -44,7 +46,17 @@ Constructor
 ##### workspace
 
 Type: `type`  
+
 Default: `path.join(process.cwd(), '.johnny')`
+
+##### maxSize
+
+Type: `string`
+
+Default: `512mb`
+
+The maximum size of the cache folder. Once this is exceeded, existing cached operation results will be intelligently purged based on the time of creation, the filesize, the time it originally took to run the operation, and the degree of redundancy. 
+> Note: Expired cache results (based on `ttl`) will always be purged regardless of whether the max cache size is hit.
 
 ### johnnycache.doCached(run, options)
 
