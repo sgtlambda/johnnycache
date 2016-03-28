@@ -106,6 +106,18 @@ Whether to gzip cached files
 
 MIT © [JM Versteeg](http://github.com/jmversteeg)
 
+---
+
+If I could start again 
+
+A million miles away 
+
+I would keep myself 
+
+I would find a way
+
+
+
 [![dependency Status][david-image]][david-url]
 [![devDependency Status][david-dev-image]][david-dev-url]
 
