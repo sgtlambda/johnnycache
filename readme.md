@@ -129,3 +129,14 @@ MIT © [JM Versteeg](http://github.com/jmversteeg)
 
 [npm-image]: https://img.shields.io/npm/v/johnnycache.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/johnnycache
+
+
+---
+
+If I could start again 
+
+A million miles away 
+
+I would keep myself 
+
+I would find a way
