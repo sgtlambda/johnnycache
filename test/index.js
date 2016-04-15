@@ -254,7 +254,7 @@ describe('Cache', () => {
                     return cache.removeResults([results[0], results[2]]);
                 })
                 .then(() => cache.getAllDocs())
-                .then(docs => docs.should.have.length(1).and.have.deep.property('0._id', results[1]._id));
+                .then(docs => docs.should.have.length(1).and.have.deep.property('0.id', results[1].id));
         });
     });
 });
