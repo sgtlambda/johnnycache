@@ -170,11 +170,14 @@ describe('Cache', () => {
                 });
 
                 it('should not await the saving of the result when awaitStore is set to false', () => {
+                    let run     = sinon.spy(copy);
                     let options = _.assign({}, defaultOptions, {awaitStore: false});
-                    return cache.doCached(copy, options)
+                    return cache.doCached(run, options)
                         .then(storingResult => {
+                            run.should.have.been.called;
                             options.onStore.should.not.have.been.called;
                             storingResult.should.be.an.instanceof(StoringResult);
+                            storingResult.cacheableOperation.should.be.an.instanceof(CacheableOperation);
                             return storingResult.savedToCache;
                         })
                         .then(savedToCache => {
