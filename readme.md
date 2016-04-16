@@ -108,7 +108,7 @@ Type: `boolean`
 
 Default: `true`
 
-Whether the returned promise should only resolve once the process is completely finished (safer, but potentially less performant). When set to `false` and some result is saved to the cache, an instance of `StoringResult`, which will have a property `savedToCache`. This property is a promise that will resolve to an instance of `SavedToCache`.
+Whether the returned promise should only resolve once the process is completely finished (safer, but potentially less performant). When set to `false` and some result is saved to the cache, the Promise will resolve to an instance of `StoringResult` as soon as the actual (to-be-cached) operation completed. `StoringResult` will then have a property `savedToCache`, a promise that will resolve to an instance of `SavedToCache`.
 
 ## License
 
