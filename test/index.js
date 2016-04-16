@@ -14,6 +14,7 @@ const del                = require('del');
 const SavedToCache       = require('./../lib/SavedToCache');
 const RestoredFromCache  = require('./../lib/RestoredFromCache');
 const CachedResult       = require('./../lib/CachedResult');
+const StoringResult      = require('./../lib/StoringResult');
 
 require('sinon-as-promised');
 
@@ -166,6 +167,20 @@ describe('Cache', () => {
                         .then(result => del(cache.getStorageLocation(result)))
                         .then(() => cache.doCached(run, defaultOptions))
                         .then(() => run.should.have.been.calledTwice);
+                });
+
+                it('should not await the saving of the result when awaitStore is set to false', () => {
+                    let options = _.assign({}, defaultOptions, {awaitStore: false});
+                    return cache.doCached(copy, options)
+                        .then(storingResult => {
+                            options.onStore.should.not.have.been.called;
+                            storingResult.should.be.an.instanceof(StoringResult);
+                            return storingResult.savedToCache;
+                        })
+                        .then(savedToCache => {
+                            options.onStore.should.have.been.called;
+                            savedToCache.should.be.an.instanceof(SavedToCache);
+                        });
                 });
             });
 
