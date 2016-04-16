@@ -21,13 +21,9 @@ $ npm install --save johnnycache
 const Cache = require('johnnycache');
 const exec = require('execa').shell;
 
-let cache = new Cache({
-    maxSize: '128mb'
-});
+let cache = new Cache();
 
-// this will be hella faster the second time around
-cache.doCached(() => exec('npm install'),
-{
+cache.doCached(() => exec('npm install'), {
     input: 'package.json',
     output: 'node_modules'
 });
