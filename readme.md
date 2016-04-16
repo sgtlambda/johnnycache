@@ -45,6 +45,8 @@ Type: `type`
 
 Default: `path.join(process.cwd(), '.johnny')`
 
+The path to the cache folder (will be [created](https://github.com/substack/node-mkdirp) if it doesn't exist)
+
 ##### maxSize
 
 Type: `string`
@@ -60,7 +62,7 @@ The maximum size of the cache folder. Once this is exceeded, existing cached ope
 
 Type: `function`
 
-A function that returns a promise for the file operation's completion. The promise will resolve into an instance of either `SavedToCache`, `RestoredToCache`, or (if the `awaitStore` option is set to false), `StoringResult`.
+A function that returns a promise for the file operation's completion. The promise will resolve into an instance of either `SavedToCache`, `RestoredToCache`, or (if the [`awaitStore`](#awaitstore) option is set to false), `StoringResult`.
 
 #### options
 
