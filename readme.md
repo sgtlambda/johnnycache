@@ -21,13 +21,9 @@ $ npm install --save johnnycache
 const Cache = require('johnnycache');
 const exec = require('execa').shell;
 
-let cache = new Cache({
-    maxSize: '128mb'
-});
+let cache = new Cache();
 
-// this will be hella faster the second time around
-cache.doCached(() => exec('npm install'),
-{
+cache.doCached(() => exec('npm install'), {
     input: 'package.json',
     output: 'node_modules'
 });
@@ -49,6 +45,8 @@ Type: `type`
 
 Default: `path.join(process.cwd(), '.johnny')`
 
+The path to the cache folder (will be [created](https://github.com/substack/node-mkdirp) if it doesn't exist)
+
 ##### maxSize
 
 Type: `string`
@@ -64,7 +62,7 @@ The maximum size of the cache folder. Once this is exceeded, existing cached ope
 
 Type: `function`
 
-A function that returns a promise for the file operation's completion
+A function that returns a promise for the file operation's completion. The promise will resolve into an instance of either `SavedToCache`, `RestoredToCache`, or (if the [`awaitStore`](#awaitstore) option is set to false), `StoringResult`.
 
 #### options
 
@@ -101,6 +99,14 @@ Type: `boolean`
 Default: `false`
 
 Whether to gzip cached files
+
+##### awaitStore
+
+Type: `boolean`
+
+Default: `true`
+
+Whether the returned promise should only resolve once the process is completely finished (safer, but potentially less performant). When set to `false` and some result is saved to the cache, the Promise will resolve to an instance of `StoringResult` as soon as the actual (to-be-cached) operation completed. This object will then have a property `savedToCache`, a promise that will resolve to an instance of `SavedToCache`.
 
 ## License
 
