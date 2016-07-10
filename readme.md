@@ -44,7 +44,7 @@ Type: `string`
 
 Default: `process.cwd()`
 
-Base path for the "input" and "output" arguments passed to [Cache.doCached](#cachedocachedrun-options)
+Base path for the `input` and `output` options passed to [Cache.doCached](#cachedocachedrun-options)
 
 ##### workspace
 
