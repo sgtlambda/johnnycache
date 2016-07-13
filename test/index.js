@@ -70,7 +70,9 @@ describe('Cache', () => {
                 output: 'test/sample/build'
             }),
 
-            'no input given': () => _.omit(defaultOptionBuilder(), 'input')
+            'no input given': () => _.omit(defaultOptionBuilder(), 'input'),
+
+            'lazyLoad': () => _.assign({}, defaultOptionBuilder(), {lazyLoad: true})
 
         }, (optionBuilder, description) => {
 
@@ -259,10 +261,10 @@ describe('Cache', () => {
         it('should remove the given results', () => {
             let results;
             return Promise.all([
-                    cache.doCached(sinon.spy(), defaultOptions),
-                    cache.doCached(sinon.spy(), _.assign({}, defaultOptions, {'action': 'op 2'})),
-                    cache.doCached(sinon.spy(), _.assign({}, defaultOptions, {'action': 'op 3'}))
-                ])
+                cache.doCached(sinon.spy(), defaultOptions),
+                cache.doCached(sinon.spy(), _.assign({}, defaultOptions, {'action': 'op 2'})),
+                cache.doCached(sinon.spy(), _.assign({}, defaultOptions, {'action': 'op 3'}))
+            ])
                 .then(r => {
                     results = _.map(r, 'cachedResult');
                     return cache.getAllDocs();
