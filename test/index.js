@@ -19,7 +19,11 @@ const StoringResult      = require('./../lib/StoringResult');
 require('sinon-as-promised');
 
 const copy = function () {
-    return pify(fsExtra.copy)('test/sample/assets/foo.txt', 'test/sample/build/foo.txt');
+    let copy = pify(fsExtra.copy);
+    return Promise.all([
+        copy('test/sample/assets/foo.txt', 'test/sample/build/foo.txt'),
+        copy('test/sample/assets/.boo', 'test/sample/build/.boo')
+    ]);
 };
 
 const uncopy = function () {
@@ -60,6 +64,31 @@ describe('Cache', () => {
     });
 
     describe('.doCached', ()=> {
+
+        let checkFile;
+
+        beforeEach(() => {
+            checkFile = options => cache.doCached(copy, options)
+                .then(() => uncopy()).then(() => cache.doCached(copy, options))
+                .then(() => pify(fs.access)('test/sample/build/.boo'));
+        });
+
+        describe('input and output with wildcard', () => {
+
+            it('should not store and restore files starting with a dot', () => {
+                return checkFile(defaultOptionBuilder()).should.be.rejected;
+            });
+        });
+
+        describe('input and output with short directory syntax', () => {
+
+            it('should store and restore files starting with a dot', () => {
+                return checkFile(_.assign({}, defaultOptionBuilder(), {
+                    input:  'test/sample/assets',
+                    output: 'test/sample/build'
+                }));
+            });
+        });
 
         _.forEach({
 
