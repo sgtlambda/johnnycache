@@ -274,7 +274,7 @@ describe('Cache', () => {
                 return cache.doCached(sinon.spy(), defaultOptions)
                     .then(() => {
                         spy.should.have.been.calledOnce;
-                    })
+                    });
             });
         });
 
@@ -287,7 +287,7 @@ describe('Cache', () => {
                 return cache.doCached(sinon.spy(), defaultOptions)
                     .then(() => {
                         spy.should.have.been.calledOnce;
-                    })
+                    });
             });
 
             it('should not fire when running an identical cacheable operation for the second time', () => {
