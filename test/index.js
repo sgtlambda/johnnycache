@@ -239,6 +239,70 @@ describe('Cache', () => {
         });
     });
 
+    describe('lifecycle events', () => {
+
+        let spy;
+
+        beforeEach(() => {
+
+            spy = sinon.spy();
+        });
+
+        describe('cleanup', () => {
+
+            it('should be fired when the cache exceeds the maximum allowed size', () => {
+
+                cache.on('cleanup', spy);
+
+                return cache.doCached(sinon.spy(), defaultOptions)
+                    .then(() => {
+                        cache.maxSize = -1;
+                        return cache.sync();
+                    })
+                    .then(() => {
+                        spy.should.have.been.calledOnce;
+                    });
+            });
+        });
+
+        describe('query', () => {
+
+            it('should be fired when running a cacheable operation', () => {
+
+                cache.on('query', spy);
+
+                return cache.doCached(sinon.spy(), defaultOptions)
+                    .then(() => {
+                        spy.should.have.been.calledOnce;
+                    })
+            });
+        });
+
+        describe('saved', () => {
+
+            it('should have been fired after running a cacheable operation for the first time', () => {
+
+                cache.on('saved', spy);
+
+                return cache.doCached(sinon.spy(), defaultOptions)
+                    .then(() => {
+                        spy.should.have.been.calledOnce;
+                    })
+            });
+
+            it('should not fire when running an identical cacheable operation for the second time', () => {
+
+                return cache.doCached(sinon.spy(), defaultOptions)
+                    .then(() => {
+                        cache.on('saved', spy);
+                        return cache.doCached(sinon.spy(), defaultOptions);
+                    }).then(() => {
+                        spy.should.not.have.been.called;
+                    });
+            });
+        });
+    });
+
     describe('assignFileSize', () => {
         it('should assign the filesize to the cachedResult object', () => {
             return cache.doCached(sinon.spy(), defaultOptions)
