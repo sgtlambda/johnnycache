@@ -45,11 +45,7 @@ const defaultOptions = {
     ttl:    60000
 };
 
-var defaultOptionBuilder = () => _.assign({}, defaultOptions, {
-    onRun:     sinon.spy(),
-    onStore:   sinon.spy(),
-    onRestore: sinon.spy()
-});
+var defaultOptionBuilder = () => _.assign({}, defaultOptions);
 
 describe('Cache', () => {
 
@@ -114,19 +110,25 @@ describe('Cache', () => {
                 });
 
                 it('should correctly invoke the callbacks', () => {
-                    let run = sinon.spy();
+                    let run       = sinon.spy();
+                    let onStore   = sinon.spy();
+                    let onRun     = sinon.spy();
+                    let onRestore = sinon.spy();
+                    cache.on('store', onStore);
+                    cache.on('run', onRun);
+                    cache.on('restore', onRestore);
                     return cache.doCached(run, defaultOptions)
                         .then(() => {
-                            defaultOptions.onStore.should.have.been.calledAfter(run);
-                            defaultOptions.onRun.should.have.been.calledBefore(run);
-                            defaultOptions.onRestore.should.not.have.been.called;
+                            onStore.should.have.been.calledAfter(run);
+                            onRun.should.have.been.calledBefore(run);
+                            onRestore.should.not.have.been.called;
                             return uncopy();
                         })
                         .then(() => cache.doCached(run, defaultOptions))
                         .then(() => {
-                            defaultOptions.onStore.should.have.been.calledOnce;
-                            defaultOptions.onRun.should.have.been.calledOnce;
-                            defaultOptions.onRestore.should.have.been.calledOnce;
+                            onStore.should.have.been.calledOnce;
+                            onRun.should.have.been.calledOnce;
+                            onRestore.should.have.been.calledOnce;
                         });
                 });
 
@@ -202,17 +204,19 @@ describe('Cache', () => {
 
                 it('should not await the saving of the result when awaitStore is set to false', () => {
                     let run     = sinon.spy(copy);
+                    let onStore = sinon.spy();
+                    cache.on('store', onStore);
                     let options = _.assign({}, defaultOptions, {awaitStore: false});
                     return cache.doCached(run, options)
                         .then(storingResult => {
                             run.should.have.been.called;
-                            options.onStore.should.not.have.been.called;
+                            onStore.should.not.have.been.called;
                             storingResult.should.be.an.instanceof(StoringResult);
                             storingResult.cacheableOperation.should.be.an.instanceof(CacheableOperation);
                             return storingResult.savedToCache;
                         })
                         .then(savedToCache => {
-                            options.onStore.should.have.been.called;
+                            onStore.should.have.been.called;
                             savedToCache.should.be.an.instanceof(SavedToCache);
                         });
                 });
