@@ -4,7 +4,8 @@ notifications:
   email: false
 node_js:
   - '4.2'
-  - 'stable'
+  - 6
+  - 7
 before_script:
   - npm install -g istanbul
   - npm run-script pretest
