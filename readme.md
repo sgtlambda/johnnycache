@@ -1,6 +1,6 @@
 # johnnycache
 
-> Cache file operations
+> Super simple file operation cache
 
 [![Build Status][travis-image]][travis-url]
 [![Code Coverage][coveralls-image]][coveralls-url]
