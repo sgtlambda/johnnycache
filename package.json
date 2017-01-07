@@ -4,11 +4,11 @@
   "description": "Super simple file operation cache",
   "main": "lib/Cache.js",
   "license": "MIT",
-  "repository": "jmversteeg/johnnycache",
+  "repository": "sgtlambda/johnnycache",
   "author": {
-    "name": "JM Versteeg",
+    "name": "sgtlambda",
     "email": "janmerijnversteeg@gmail.com",
-    "url": "github.com/jmversteeg"
+    "url": "github.com/sgtlambda"
   },
   "engines": {
     "node": ">=0.12.0"

@@ -119,25 +119,25 @@ TLDR there is a small performance increase to be gained (through operation concu
 
 ## License
 
-MIT © [JM Versteeg](http://github.com/jmversteeg)
+MIT © [sgtlambda](http://github.com/sgtlambda)
 
 [![dependency Status][david-image]][david-url]
 [![devDependency Status][david-dev-image]][david-dev-url]
 
-[travis-image]: https://img.shields.io/travis/jmversteeg/johnnycache.svg?style=flat-square
-[travis-url]: https://travis-ci.org/jmversteeg/johnnycache
+[travis-image]: https://img.shields.io/travis/sgtlambda/johnnycache.svg?style=flat-square
+[travis-url]: https://travis-ci.org/sgtlambda/johnnycache
 
-[codeclimate-image]: https://img.shields.io/codeclimate/github/jmversteeg/johnnycache.svg?style=flat-square
-[codeclimate-url]: https://codeclimate.com/github/jmversteeg/johnnycache
+[codeclimate-image]: https://img.shields.io/codeclimate/github/sgtlambda/johnnycache.svg?style=flat-square
+[codeclimate-url]: https://codeclimate.com/github/sgtlambda/johnnycache
 
-[david-image]: https://img.shields.io/david/jmversteeg/johnnycache.svg?style=flat-square
-[david-url]: https://david-dm.org/jmversteeg/johnnycache
+[david-image]: https://img.shields.io/david/sgtlambda/johnnycache.svg?style=flat-square
+[david-url]: https://david-dm.org/sgtlambda/johnnycache
 
-[david-dev-image]: https://img.shields.io/david/dev/jmversteeg/johnnycache.svg?style=flat-square
-[david-dev-url]: https://david-dm.org/jmversteeg/johnnycache#info=devDependencies
+[david-dev-image]: https://img.shields.io/david/dev/sgtlambda/johnnycache.svg?style=flat-square
+[david-dev-url]: https://david-dm.org/sgtlambda/johnnycache#info=devDependencies
 
-[coveralls-image]: https://img.shields.io/coveralls/jmversteeg/johnnycache.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/jmversteeg/johnnycache
+[coveralls-image]: https://img.shields.io/coveralls/sgtlambda/johnnycache.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/sgtlambda/johnnycache
 
 [npm-image]: https://img.shields.io/npm/v/johnnycache.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/johnnycache
