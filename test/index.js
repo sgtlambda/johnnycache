@@ -18,6 +18,8 @@ const StoringResult      = require('./../lib/StoringResult');
 
 require('sinon-as-promised');
 
+const shouldHaveNDocs = (cache, n) => () => cache.getAllDocs().then(docs => docs.should.have.length(n));
+
 const copy = function () {
     let copy = pify(fsExtra.copy);
     return Promise.all([
@@ -45,21 +47,21 @@ const defaultOptions = {
     ttl:    60000
 };
 
-var defaultOptionBuilder = () => _.assign({}, defaultOptions);
+const defaultOptionBuilder = () => _.assign({}, defaultOptions);
 
 describe('Cache', () => {
 
     let cache;
 
-    beforeEach(()=> {
+    beforeEach(() => {
         cache = new Cache();
     });
 
-    afterEach(()=> {
+    afterEach(() => {
         return resetWorkspace();
     });
 
-    describe('.doCached', ()=> {
+    describe('.doCached', () => {
 
         let checkFile;
 
@@ -330,7 +332,8 @@ describe('Cache', () => {
                 .then(() => Promise.all([
                     pify(fs.access)(cache.getStorageLocation(resultExpiresImmediately)).should.be.rejected,
                     pify(fs.access)(cache.getStorageLocation(resultExpiresLater)).should.be.resolved
-                ]));
+                ]))
+                .then(shouldHaveNDocs(cache, 1));
         });
     });
 
@@ -360,7 +363,7 @@ describe('Cache', () => {
             return Promise.all([
                 cache.doCached(sinon.spy(), defaultOptions),
                 cache.doCached(sinon.spy(), _.assign({}, defaultOptions, {'action': 'op 2'})),
-                cache.doCached(sinon.spy(), _.assign({}, defaultOptions, {'action': 'op 3'}))
+                cache.doCached(sinon.spy(), _.assign({}, defaultOptions, {'action': 'op 3'})),
             ])
                 .then(r => {
                     results = _.map(r, 'cachedResult');
@@ -372,6 +375,28 @@ describe('Cache', () => {
                 })
                 .then(() => cache.getAllDocs())
                 .then(docs => docs.should.have.length(1).and.have.deep.property('0.id', results[1].id));
+        });
+    });
+
+    describe('db', () => {
+        describe('persistence', () => {
+            it('should persist added entries', () => {
+                return cache.doCached(sinon.spy(), defaultOptions)
+                    .then(shouldHaveNDocs(cache, 1))
+                    .then(() => (new Cache()).sync())
+                    .then(newCache => shouldHaveNDocs(newCache, 1)());
+            });
+            it('should not persist removed entries', () => {
+                return Promise.all([
+                    cache.doCached(_.noop, defaultOptions),
+                    cache.doCached(_.noop, _.assign({}, defaultOptions, {'ttl': -1, 'action': 'op2'})),
+                ])
+                    .then(shouldHaveNDocs(cache, 1))
+                    .then(() => cache.sync())
+                    .then(shouldHaveNDocs(cache, 1))
+                    .then(() => (new Cache()).sync())
+                    .then(newCache => shouldHaveNDocs(newCache, 1)());
+            });
         });
     });
 });
