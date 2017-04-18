@@ -16,8 +16,6 @@ const RestoredFromCache  = require('./../lib/RestoredFromCache');
 const CachedResult       = require('./../lib/CachedResult');
 const StoringResult      = require('./../lib/StoringResult');
 
-require('sinon-as-promised');
-
 const shouldHaveNDocs = (cache, n) => () => cache.getAllDocs().then(docs => docs.should.have.length(n));
 
 const copy = function () {
