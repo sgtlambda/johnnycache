@@ -319,7 +319,7 @@ describe('Cache', () => {
                 .then(() => cache.sync())
                 .then(() => Promise.all([
                     pify(fs.access)(cache.getStorageLocation(resultExpiresImmediately)).should.be.rejected,
-                    pify(fs.access)(cache.getStorageLocation(resultExpiresLater)).should.be.resolved
+                    pify(fs.access)(cache.getStorageLocation(resultExpiresLater)).should.be.fulfilled
                 ]))
                 .then(shouldHaveNDocs(cache, 1));
         });
@@ -362,7 +362,11 @@ describe('Cache', () => {
                     return cache.removeResults([results[0], results[2]]);
                 })
                 .then(() => cache.getAllDocs())
-                .then(docs => docs.should.have.length(1).and.have.deep.property('0.id', results[1].id));
+                .then(docs => {
+
+                    docs.should.have.length(1);
+                    docs[0].should.have.property('id', results[1].id);
+                });
         });
     });
 
