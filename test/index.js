@@ -307,16 +307,6 @@ describe('Cache', () => {
         });
     });
 
-    describe('assignFileSize', () => {
-        it('should assign the filesize to the cachedResult object', () => {
-            return cache.doCached(sinon.spy(), defaultOptions)
-                .then(result => {
-                    result.cachedResult.fileSize.should.be.a('number');
-                    result.cachedResult.fileSize.should.be.above(0);
-                });
-        });
-    });
-
     describe('.sync', () => {
         it('should delete the files of expired cache entries', () => {
             let expiresLater       = defaultOptions;
