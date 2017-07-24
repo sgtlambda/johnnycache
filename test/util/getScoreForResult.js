@@ -7,14 +7,14 @@ const CachedResult      = require('./../../lib/CachedResult');
 
 describe('getScoreForResult', () => {
 
-    let defaultCachedResult = new CachedResult(null, 'some op', null, null, null, null, 100, 100);
+    let defaultCachedResult = new CachedResult({action: 'some op', fileSize: 100, runtime: 100});
 
-    let cachedResultHigherFileSize = new CachedResult(null, 'some op', null, null, null, null, 1000, 100);
+    let cachedResultHigherFileSize = new CachedResult({action: 'some op', fileSize: 1000, runtime: 100});
 
-    let cachedResultNewer = new CachedResult(null, 'some op', null, null, null, null, 100, 100);
+    let cachedResultNewer = new CachedResult({action: 'some op', fileSize: 100, runtime: 100});
     cachedResultNewer.created += 100;
 
-    let cachedResultHigherRuntime = new CachedResult(null, 'some op', null, null, null, null, 100, 1000);
+    let cachedResultHigherRuntime = new CachedResult({action: 'some op', fileSize: 100, runtime: 1000});
 
     it('should get a score for the given result', () => {
 
@@ -43,8 +43,8 @@ describe('getScoreForResult', () => {
 
     it('should give the result a lower score if a context of other results is given', () => {
 
-        var scoreWithout = getScoreForResult(defaultCachedResult);
-        var scoreWith    = getScoreForResult(defaultCachedResult, [
+        const scoreWithout = getScoreForResult(defaultCachedResult);
+        const scoreWith    = getScoreForResult(defaultCachedResult, [
             defaultCachedResult, cachedResultNewer
         ]);
         scoreWithout.should.be.above(scoreWith);
