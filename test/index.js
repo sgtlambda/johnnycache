@@ -3,7 +3,6 @@
 require('./support/bootstrap');
 
 const _                  = require('lodash');
-const Promise            = require('pinkie-promise');
 const CacheableOperation = require('./../lib/CacheableOperation');
 const Cache              = require('./../lib/Cache');
 const sinon              = require('sinon');
