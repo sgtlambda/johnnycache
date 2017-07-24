@@ -16,7 +16,7 @@ const RestoredFromCache  = require('./../lib/RestoredFromCache');
 const CachedResult       = require('./../lib/CachedResult');
 const StoringResult      = require('./../lib/StoringResult');
 
-const shouldHaveNDocs = (cache, n) => () => cache.getAllDocs().then(docs => docs.should.have.length(n));
+const shouldHaveNDocs = (cache, n) => () => cache.getAllDocs().should.have.length(n);
 
 const copy = function () {
     let copy = pify(fsExtra.copy);
@@ -355,15 +355,11 @@ describe('Cache', () => {
             ])
                 .then(r => {
                     results = _.map(r, 'cachedResult');
-                    return cache.getAllDocs();
-                })
-                .then(docs => {
-                    docs.should.have.length(3);
+                    cache.getAllDocs().should.have.length(3);
                     return cache.removeResults([results[0], results[2]]);
                 })
-                .then(() => cache.getAllDocs())
-                .then(docs => {
-
+                .then(() => {
+                    const docs = cache.getAllDocs();
                     docs.should.have.length(1);
                     docs[0].should.have.property('id', results[1].id);
                 });
