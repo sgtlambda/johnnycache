@@ -5,6 +5,8 @@
 [![Build Status][travis-image]][travis-url]
 [![Code Coverage][coveralls-image]][coveralls-url]
 [![NPM Version][npm-image]][npm-url]
+[![Required node version][node-image]][node-url]
+
 
 ## Install
 
@@ -138,6 +140,8 @@ MIT © [sgtlambda](http://github.com/sgtlambda)
 [npm-image]: https://img.shields.io/npm/v/johnnycache.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/johnnycache
 
+[node-image]: https://img.shields.io/badge/node-%3E=_v7.6-lightgrey.svg?style=flat-square
+[node-url]: https://nodejs.org/en/blog/release/v7.6.0/
 
 ---
 
