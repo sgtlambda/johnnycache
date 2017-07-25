@@ -8,6 +8,7 @@ before_script:
   - npm install -g istanbul
   - npm run-script pretest
 script:
-  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --recursive
+  - ./node_modules/mocha/bin/_mocha --recursive
+  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --recursive; exit 0
 after_script:
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
