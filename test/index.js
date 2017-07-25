@@ -4,10 +4,11 @@ require('./support/bootstrap');
 
 const _       = require('lodash');
 const sinon   = require('sinon');
-const pify    = require('pify');
 const fs      = require('fs');
-const fsExtra = require('fs-extra');
 const del     = require('del');
+const pify    = require('pify');
+const fsExtra = require('fs-extra');
+const fsCopy  = pify(fsExtra.copy);
 
 const Intent            = require('./../lib/Intent');
 const Operation         = require('./../lib/Operation');
@@ -21,10 +22,9 @@ const StoringResult     = require('./../lib/StoringResult');
 const shouldHaveNDocs = (cache, n) => () => cache.index.all().should.have.length(n);
 
 const copy = function () {
-    let copy = pify(fsExtra.copy);
     return Promise.all([
-        copy('test/sample/assets/foo.txt', 'test/sample/build/foo.txt'),
-        copy('test/sample/assets/.boo', 'test/sample/build/.boo')
+        fsCopy('test/sample/assets/foo.txt', 'test/sample/build/foo.txt'),
+        fsCopy('test/sample/assets/.boo', 'test/sample/build/.boo')
     ]);
 };
 
@@ -69,9 +69,7 @@ describe('Cache', () => {
         };
     });
 
-    afterEach(async () => {
-        await resetWorkspace();
-    });
+    afterEach(resetWorkspace);
 
     describe('.run', () => {
 
