@@ -17,13 +17,13 @@ $ npm install --save johnnycache
 
 ```js
 const Cache = require('johnnycache');
-const exec = require('execa').shell;
+const exec  = require('execa').shell;
 
 const cache = new Cache();
 
 const npmInstall = new Cache.Intent(() => exec('npm install'), {
-    input: 'package.json',
-    output: 'node_modules'
+    input:  ['package.json'],
+    output: ['node_modules'],
 });
 
 cache.run(npmInstall);
