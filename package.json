@@ -2,7 +2,7 @@
   "name": "johnnycache",
   "version": "3.0.0-0",
   "description": "Super simple file operation cache",
-  "main": "lib/Cache.js",
+  "main": "index.js",
   "license": "MIT",
   "repository": "sgtlambda/johnnycache",
   "author": {
