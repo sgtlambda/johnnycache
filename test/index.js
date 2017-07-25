@@ -190,13 +190,13 @@ describe('Cache', () => {
                 it('should generate a file at the location corresponding to the cached result', () => {
                     let run = sinon.spy(copy);
                     return cache.doCached(run, defaultOptions)
-                        .then(result => pify(fs.access)(cache.getStorageLocation(result)));
+                        .then(result => pify(fs.access)(cache.getAbsolutePath(result.cachedResult.fileName)));
                 });
 
                 it('should fallback gracefully if the cached result has no corresponding file', () => {
                     let run = sinon.spy(copy);
                     return cache.doCached(run, defaultOptions)
-                        .then(result => del(cache.getStorageLocation(result)))
+                        .then(result => del(cache.getAbsolutePath(result.cachedResult.fileName)))
                         .then(() => cache.doCached(run, defaultOptions))
                         .then(() => run.should.have.been.calledTwice);
                 });
@@ -317,8 +317,8 @@ describe('Cache', () => {
                 .then(r => resultExpiresLater = r)
                 .then(() => cache.sync())
                 .then(() => Promise.all([
-                    pify(fs.access)(cache.getStorageLocation(resultExpiresImmediately)).should.be.rejected,
-                    pify(fs.access)(cache.getStorageLocation(resultExpiresLater)).should.be.fulfilled
+                    pify(fs.access)(cache.getAbsolutePath(resultExpiresImmediately.cachedResult.fileName)).should.be.rejected,
+                    pify(fs.access)(cache.getAbsolutePath(resultExpiresLater.cachedResult.fileName)).should.be.fulfilled
                 ]))
                 .then(shouldHaveNDocs(cache, 1));
         });
