@@ -47,8 +47,6 @@ const defaultOptions = {
     ttl:    60000
 };
 
-const _options = () => _.assign({}, defaultOptions);
-
 describe('Cache', () => {
 
     let cache, doCached;
@@ -88,14 +86,14 @@ describe('Cache', () => {
         describe('input and output with wildcard', () => {
 
             it('should not store and restore files starting with a dot', () => {
-                return checkFile(_options()).should.be.rejected;
+                return checkFile(defaultOptions).should.be.rejected;
             });
         });
 
         describe('input and output with short directory syntax', () => {
 
             it('should store and restore files starting with a dot', () => {
-                return checkFile(_.assign({}, _options(), {
+                return checkFile(_.assign({}, defaultOptions, {
                     input:  'test/sample/assets',
                     output: 'test/sample/build'
                 }));
@@ -234,7 +232,7 @@ describe('Cache', () => {
         });
 
         describe('no input given', () => {
-            runBasicCacheTests(() => _.omit(_options(), 'input'));
+            runBasicCacheTests(() => _.omit(defaultOptions, 'input'));
         });
 
         it('should return SavedToCache and RestoredFromCache objects for performance analytics purposes', () => {
