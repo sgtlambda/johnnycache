@@ -206,22 +206,19 @@ describe('Cache', () => {
                     .then(() => run.should.have.been.calledTwice);
             });
 
-            it('should not await the saving of the result when awaitStore is set to false', () => {
+            it('should not await the saving of the result when awaitStore is set to false', async () => {
+
                 let run     = sinon.spy(copy);
                 let onStore = sinon.spy();
                 cache.on('store', onStore);
-                return doCached(run, defaultOptions, {awaitStore: false})
-                    .then(storingResult => {
-                        run.should.have.been.called;
-                        onStore.should.not.have.been.called;
-                        storingResult.should.be.an.instanceof(StoringResult);
-                        storingResult.operation.should.be.an.instanceof(Operation);
-                        return storingResult.savedToCache;
-                    })
-                    .then(savedToCache => {
-                        onStore.should.have.been.called;
-                        savedToCache.should.be.an.instanceof(SavedToCache);
-                    });
+                const storingResult = await doCached(run, defaultOptions, {awaitStore: false});
+                run.should.have.been.called;
+                onStore.should.not.have.been.called;
+                storingResult.should.be.an.instanceof(StoringResult);
+                storingResult.operation.should.be.an.instanceof(Operation);
+                const savedToCache = await storingResult.savedToCache;
+                onStore.should.have.been.called;
+                savedToCache.should.be.an.instanceof(SavedToCache);
             });
         };
 
@@ -256,6 +253,28 @@ describe('Cache', () => {
                     restored.should.have.property('runtime').that.is.a('number');
                     restored.should.have.property('result').that.is.an.instanceof(Result);
                 });
+        });
+
+        describe('env input', () => {
+
+            const options = _.assign({}, defaultOptions, {input: ['$SOME_VAR']});
+
+            it('should not run twice if the environment variable does not change', async () => {
+                process.env.SOME_VAR = 'foo';
+                const spy            = sinon.spy();
+                await doCached(spy, options);
+                await doCached(spy, options);
+                spy.should.have.been.calledOnce;
+            });
+
+            it('should run twice if the environment variable changes', async () => {
+                process.env.SOME_VAR = 'foo';
+                const spy            = sinon.spy();
+                await doCached(spy, options);
+                process.env.SOME_VAR = 'bar';
+                await doCached(spy, options);
+                spy.should.have.been.calledTwice;
+            });
         });
     });
 
