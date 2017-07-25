@@ -29,8 +29,8 @@ describe('CacheFlow', () => {
 
     const noopSteps = (fn1, fn2) => {
         return [
-            new Step({operation: new Operation(fn1)}),
-            new Step({operation: new Operation(fn2)}),
+            {intent: new Intent(fn1)},
+            {intent: new Intent(fn2)},
         ];
     };
 
@@ -38,19 +38,17 @@ describe('CacheFlow', () => {
     const intermediateFile = 'test/sample/build/temp.txt';
     const targetFile       = 'test/sample/build/bar.txt';
 
-    const copyOp = (from = sourceFile, to = targetFile) => cache.convertIntent(new Intent(() => {
+    const copyIntent = (from = sourceFile, to = targetFile) => new Intent(() => {
         return fsCopy(from, to);
     }, {
         input:  [from],
         output: [to],
-    }));
+    });
 
     const copyStepsWithIntermediate = () => {
-        const op1 = copyOp(sourceFile, intermediateFile);
-        const op2 = copyOp(intermediateFile, targetFile);
         return [
-            new Step({operation: op1, isIntermediate: true}),
-            new Step({operation: op2}),
+            {intent: copyIntent(sourceFile, intermediateFile), isIntermediate: true},
+            {intent: copyIntent(intermediateFile, targetFile)},
         ];
     };
 
@@ -67,7 +65,7 @@ describe('CacheFlow', () => {
         const step1 = sinon.spy();
         const step2 = sinon.spy();
 
-        cacheFlow.steps = noopSteps(step1, step2);
+        cacheFlow.import(noopSteps(step1, step2));
 
         await cacheFlow.run();
 
@@ -77,7 +75,7 @@ describe('CacheFlow', () => {
 
     it('should not run or restore an intermediate step the second time around', async () => {
 
-        cacheFlow.steps = copyStepsWithIntermediate();
+        cacheFlow.import(copyStepsWithIntermediate());
 
         await cacheFlow.run();
 
@@ -87,7 +85,7 @@ describe('CacheFlow', () => {
         await deleteBuild();
 
         // Reset the steps because they are stateful
-        cacheFlow.steps = copyStepsWithIntermediate();
+        cacheFlow.import(copyStepsWithIntermediate());
         await cacheFlow.run();
 
         (await pathExists(intermediateFile)).should.be.false;
