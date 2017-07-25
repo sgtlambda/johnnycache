@@ -28,6 +28,7 @@
     "performance"
   ],
   "dependencies": {
+    "arrify": "^1.0.1",
     "bluebird": "^3.5.0",
     "defa": "^1.0.0",
     "del": "^3.0.0",
