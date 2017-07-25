@@ -16,7 +16,7 @@
   "scripts": {
     "pretest": "eslint lib",
     "test": "mocha -R spec --recursive",
-    "test:watch": "mocha -w -R spec --recursive",
+    "test:watch": "mocha -w --recursive",
     "test-coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive && opn coverage/lcov-report/index.html"
   },
   "keywords": [

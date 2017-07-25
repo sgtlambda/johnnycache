@@ -64,7 +64,8 @@ describe('Cache', () => {
          * @param {Object} runnerOptions
          * @returns {Promise.<StoringResult|SavedToCache|RestoredFromCache>}
          */
-        doCached = (run, options, runnerOptions = {}) => {
+        doCached = (run = null, options = defaultOptions, runnerOptions = {}) => {
+            if (run === null) run = sinon.stub();
             const intent = new Intent(run, options);
             return cache.run(intent, runnerOptions);
         };
@@ -286,38 +287,29 @@ describe('Cache', () => {
 
         describe('query', () => {
 
-            it('should be fired when running a cacheable operation', () => {
+            it('should be fired when running a cacheable operation', async () => {
 
                 cache.on('query', spy);
-
-                return doCached(sinon.spy(), defaultOptions)
-                    .then(() => {
-                        spy.should.have.been.calledOnce;
-                    });
+                await doCached();
+                return spy.should.have.been.calledOnce;
             });
         });
 
         describe('saved', () => {
 
-            it('should have been fired after running a cacheable operation for the first time', () => {
+            it('should have been fired after running a cacheable operation for the first time', async () => {
 
                 cache.on('saved', spy);
-
-                return doCached(sinon.spy(), defaultOptions)
-                    .then(() => {
-                        spy.should.have.been.calledOnce;
-                    });
+                await doCached();
+                return spy.should.have.been.calledOnce;
             });
 
-            it('should not fire when running an identical cacheable operation for the second time', () => {
+            it('should not fire when running an identical cacheable operation for the second time', async () => {
 
-                return doCached(sinon.spy(), defaultOptions)
-                    .then(() => {
-                        cache.on('saved', spy);
-                        return doCached(sinon.spy(), defaultOptions);
-                    }).then(() => {
-                        spy.should.not.have.been.called;
-                    });
+                await doCached();
+                cache.on('saved', spy);
+                await doCached();
+                return spy.should.not.have.been.called;
             });
         });
     });
