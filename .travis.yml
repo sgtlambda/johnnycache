@@ -5,10 +5,10 @@ notifications:
 node_js:
   - 8
 before_script:
-  - npm install -g istanbul
-  - npm run-script pretest
+  - yarn global add istanbul@next
+  - yarn run pretest
 script:
   - ./node_modules/mocha/bin/_mocha --recursive
-  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --recursive; exit 0
+  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --recursive
 after_script:
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
