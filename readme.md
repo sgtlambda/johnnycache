@@ -19,15 +19,16 @@ $ npm install --save johnnycache
 const Cache = require('johnnycache');
 const exec = require('execa').shell;
 
-let cache = new Cache();
+const cache = new Cache();
 
-cache.doCached(() => exec('npm install'), {
+const npmInstall = new Cache.Intent(() => exec('npm install'), {
     input: 'package.json',
     output: 'node_modules'
 });
 
-```
+cache.run(npmInstall);
 
+```
 
 ## API
 
@@ -43,7 +44,7 @@ Type: `string`
 
 Default: `process.cwd()`
 
-Base path for the `input` and `output` options passed to [Cache.doCached](#cachedocachedrun-options)
+Base path for cache `input` and `output` options.
 
 ##### workspace
 
@@ -51,7 +52,7 @@ Type: `string`
 
 Default: `path.join(process.cwd(), '.johnny')`
 
-The path to the cache folder (will be [created](https://github.com/substack/node-mkdirp) if it doesn't exist)
+The path to the cache folder (will be [created](https://github.com/sindresorhus/make-dir) if it doesn't exist)
 
 ##### maxSize
 
@@ -62,7 +63,9 @@ Default: `512mb`
 The maximum size of the cache folder. Once this is exceeded, existing cached operation results will be intelligently purged based on the time of creation, the filesize, the time it originally took to run the operation, and the degree of redundancy. 
 > Note: Expired cache results (based on `ttl`) will always be purged regardless of whether the max cache size is hit.
 
-### Cache.doCached(run, options)
+### new Cache.Intent(run, options)
+
+Create a new operation intent.
 
 #### run
 
@@ -105,6 +108,10 @@ Type: `boolean`
 Default: `false`
 
 Whether to gzip cached files
+
+### Cache.run(intent)
+
+Run the operation, or restore cached results for the operation.
 
 ## License
 
