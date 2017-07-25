@@ -68,7 +68,7 @@ The maximum size of the cache folder. Once this is exceeded, existing cached ope
 
 Type: `function`
 
-A function that returns a promise for the file operation's completion. The promise will resolve into an instance of either `SavedToCache`, `RestoredToCache`, or (if the [`awaitStore`](#awaitstore) option is set to false), `StoringResult`.
+A function that returns a promise for the file operation's completion. The promise will resolve into an instance of either `SavedToCache`, `RestoredFromCache`.
 
 #### options
 
@@ -105,16 +105,6 @@ Type: `boolean`
 Default: `false`
 
 Whether to gzip cached files
-
-##### awaitStore
-
-Type: `boolean`
-
-Default: `true`
-
-Whether the returned promise should only resolve once the process is completely finished (safer, but potentially less performant). When set to `false` and some result is saved to the cache, the Promise will resolve to an instance of `StoringResult` as soon as the actual (to-be-cached) operation completes. This object will then have a property `savedToCache`, a promise that will resolve to an instance of `SavedToCache`.
-
-TLDR there is a small performance increase to be gained (through operation concurrency) by setting this to false.
 
 ## License
 
