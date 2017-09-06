@@ -5,13 +5,12 @@
 [![Build Status][travis-image]][travis-url]
 [![Code Coverage][coveralls-image]][coveralls-url]
 [![NPM Version][npm-image]][npm-url]
-[![Required node version][node-image]][node-url]
 
 
 ## Install
 
 ```
-$ npm install --save johnnycache
+$ yarn add johnnycache@next
 ```
 
 
@@ -28,7 +27,7 @@ const npmInstall = new Cache.Intent(() => exec('npm install'), {
     output: ['node_modules'],
 });
 
-cache.run(npmInstall);
+await cache.run(npmInstall);
 
 ```
 
