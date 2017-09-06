@@ -11,7 +11,7 @@
 ## Install
 
 ```
-$ npm install --save johnnycache
+$ yarn add johnnycache@next
 ```
 
 
