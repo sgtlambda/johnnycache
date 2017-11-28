@@ -11,6 +11,7 @@ const RestoredFromCache = require('./lib/RestoredFromCache');
 
 module.exports = Cache;
 
+module.exports.Cache     = Cache;
 module.exports.CacheFlow = CacheFlow;
 module.exports.Intent    = Intent;
 
