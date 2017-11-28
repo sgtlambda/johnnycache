@@ -65,7 +65,7 @@ describe('CacheFlow', () => {
         const step1 = sinon.spy();
         const step2 = sinon.spy();
 
-        cacheFlow.import(noopSteps(step1, step2));
+        await cacheFlow.add(noopSteps(step1, step2));
 
         await cacheFlow.run();
 
@@ -75,7 +75,7 @@ describe('CacheFlow', () => {
 
     it('should not run or restore an intermediate step the second time around', async () => {
 
-        cacheFlow.import(copyStepsWithIntermediate());
+        await cacheFlow.add(copyStepsWithIntermediate());
 
         await cacheFlow.run();
 
@@ -85,7 +85,9 @@ describe('CacheFlow', () => {
         await deleteBuild();
 
         // Reset the steps because they are stateful
-        cacheFlow.import(copyStepsWithIntermediate());
+        cacheFlow.clear();
+        await cacheFlow.add(copyStepsWithIntermediate());
+
         await cacheFlow.run();
 
         (await pathExists(intermediateFile)).should.be.false;
