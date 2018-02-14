@@ -17,7 +17,6 @@ const SavedToCache      = require('./../lib/SavedToCache');
 const RestoredFromCache = require('./../lib/RestoredFromCache');
 const Result            = require('./../lib/Result');
 const Runner            = require('./../lib/Runner');
-const StoringResult     = require('./../lib/StoringResult');
 
 const shouldHaveNDocs = (cache, n) => () => cache.index.all().should.have.length(n);
 
@@ -60,7 +59,7 @@ describe('Cache', () => {
          * @param {Function} run
          * @param {Object} options
          * @param {Object} runnerOptions
-         * @returns {Promise.<StoringResult|SavedToCache|RestoredFromCache>}
+         * @returns {SavedToCache|RestoredFromCache}
          */
         doCached = (run = null, options = defaultOptions, runnerOptions = {}) => {
             if (run === null) run = sinon.stub();
@@ -200,21 +199,6 @@ describe('Cache', () => {
                     .then(({result}) => del(cache.getAbsolutePath(result.filename)))
                     .then(() => doCached(run, defaultOptions))
                     .then(() => run.should.have.been.calledTwice);
-            });
-
-            it('should not await the saving of the result when awaitStore is set to false', async () => {
-
-                let run     = sinon.spy(copy);
-                let onStore = sinon.spy();
-                cache.on('store', onStore);
-                const storingResult = await doCached(run, defaultOptions, {awaitStore: false});
-                run.should.have.been.called;
-                onStore.should.not.have.been.called;
-                storingResult.should.be.an.instanceof(StoringResult);
-                storingResult.operation.should.be.an.instanceof(Operation);
-                const savedToCache = await storingResult.savedToCache;
-                onStore.should.have.been.called;
-                savedToCache.should.be.an.instanceof(SavedToCache);
             });
         };
 
