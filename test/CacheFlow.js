@@ -11,9 +11,7 @@ const fsCopy     = pify(fsExtra.copy);
 
 const Cache     = require('./../lib/Cache');
 const CacheFlow = require('./../lib/CacheFlow');
-const Step      = require('./../lib/Step');
 const Intent    = require('./../lib/Intent');
-const Operation = require('./../lib/Operation');
 
 const deleteBuild = function () {
     return del(['test/sample/build']);
