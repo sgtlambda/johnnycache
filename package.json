@@ -30,7 +30,6 @@
   "dependencies": {
     "arrify": "^1.0.1",
     "bluebird": "^3.5.1",
-    "defa": "^1.0.0",
     "del": "^3.0.0",
     "extrakt": "^1.0.6",
     "filesize-parser": "^1.4.1",
