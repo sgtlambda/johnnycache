@@ -108,7 +108,7 @@ Type: `boolean`
 
 Default: `false`
 
-Whether to gzip cached files
+Whether to compress cached files - if enabled, a `.tar.gz` file will be generated instead of a `.tar` file.
 
 ### Cache.run(intent)
 
