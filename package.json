@@ -10,9 +10,6 @@
     "email": "janmerijnversteeg@gmail.com",
     "url": "github.com/sgtlambda"
   },
-  "engines": {
-    "node": ">=7.6"
-  },
   "scripts": {
     "pretest": "eslint lib",
     "test": "mocha -R spec --recursive",
