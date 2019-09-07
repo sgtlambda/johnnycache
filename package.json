@@ -1,6 +1,6 @@
 {
   "name": "johnnycache",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Super simple file operation cache",
   "main": "index.js",
   "license": "MIT",
